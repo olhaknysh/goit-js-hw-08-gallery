@@ -84,14 +84,12 @@ function handleImageRemote(event) {
       const nextImageSrc = defaultExport[indexImage + 1].original;
       imgModalRef.src = nextImageSrc;
       imgModalRef.dataset.index = defaultExport[indexImage + 1].index;
-      console.log("right");
     }
     if (event.code === "ArrowLeft") {
       let indexImage = Number(imgModalRef.dataset.index);
       const nextImageSrc = defaultExport[indexImage - 1].original;
       imgModalRef.src = nextImageSrc;
       imgModalRef.dataset.index = defaultExport[indexImage - 1].index;
-      console.log("left");
     }
   }
 }
