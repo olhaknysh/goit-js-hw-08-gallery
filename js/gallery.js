@@ -6,6 +6,7 @@ const closeModalBtnRef = document.querySelector(
   "button[data-action='close-lightbox']"
 );
 const imgModalRef = document.querySelector(".lightbox__image");
+const overlayRef = modalWindowRef.querySelector(".lightbox__overlay");
 
 const createMarkup = function ({ preview, original, description, index }) {
   const containerRef = document.createElement("li");
@@ -36,7 +37,7 @@ galleryRef.append(...images);
 
 galleryRef.addEventListener("click", handleImageOpenModal);
 closeModalBtnRef.addEventListener("click", handleCloseModal);
-modalWindowRef.addEventListener("click", handleOverlayClickClose);
+overlayRef.addEventListener("click", handleCloseModal);
 window.addEventListener("keydown", handleEscapeClose);
 window.addEventListener("keydown", handleImageRemote);
 
@@ -48,12 +49,8 @@ function handleImageOpenModal(event) {
     imgModalRef.alt = event.target.alt;
     imgModalRef.dataset.index = event.target.dataset.index;
 
-    handleModalOpen();
+    modalWindowRef.classList.add("is-open");
   }
-}
-
-function handleModalOpen() {
-  modalWindowRef.classList.add("is-open");
 }
 
 function handleCloseModal() {
@@ -70,23 +67,22 @@ function handleEscapeClose(event) {
   }
 }
 
-function handleOverlayClickClose(event) {
-  const overlayRef = modalWindowRef.querySelector(".lightbox__overlay");
-  if (event.target === overlayRef) {
-    handleCloseModal();
-  }
-}
-
 function handleImageRemote(event) {
   if (modalWindowRef.classList.contains("is-open")) {
     if (event.code === "ArrowRight") {
       let indexImage = Number(imgModalRef.dataset.index);
+      if (indexImage === 8) {
+        return;
+      }
       const nextImageSrc = defaultExport[indexImage + 1].original;
       imgModalRef.src = nextImageSrc;
       imgModalRef.dataset.index = defaultExport[indexImage + 1].index;
     }
     if (event.code === "ArrowLeft") {
       let indexImage = Number(imgModalRef.dataset.index);
+      if (indexImage === 0) {
+        return;
+      }
       const nextImageSrc = defaultExport[indexImage - 1].original;
       imgModalRef.src = nextImageSrc;
       imgModalRef.dataset.index = defaultExport[indexImage - 1].index;
